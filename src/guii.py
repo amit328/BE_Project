@@ -211,7 +211,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         # msg_box_name.setIcon(QMessageBox.about(self, "Title", "Message"))
         msgBox = QMessageBox()
         msgBox.setIcon(QMessageBox.Information)
-        msgBox.setText("1. Config. - It is use to set all the configuration file \n 2. Open Dir - It is use to open a directory \n 3. Next Image -  It is used to access next image \n 3. Prev Image -  It is used to access previous image \n 4. Predict all - It is used to predict all the images \n 5. Back - It is used to access login page \n 6. Help - It gives Information of all the pages \n 7. Quit - It is used to quit the application ")
+        msgBox.setText("1. Config. - It is use to set all the configuration file \n 2. Open Dir - It is use to open a directory \n 3. Next Image -  It is used to access next image \n 4. Prev Image -  It is used to access previous image \n 5. Predict all - It is used to predict all the images \n 6. Back - It is used to access login page \n 7. Help - It gives Information of all the pages \n 8. Quit - It is used to quit the application ")
         msgBox.setWindowTitle("QMessageBox Example")
         msgBox.setStandardButtons(QMessageBox.Ok)
         # msgBox.buttonClicked.connect(msgButtonClick)
