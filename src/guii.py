@@ -87,10 +87,43 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.help.setGeometry(QtCore.QRect(40, 630, 151, 51))
         self.help.setObjectName("Help")
         MainWindow.setCentralWidget(self.centralwidget)
+        # self.menubar = QtWidgets.QMenuBar(MainWindow)
+        # self.menubar.setGeometry(QtCore.QRect(0, 0, 1605, 20))
+        # self.menubar.setObjectName("menubar")
+        # MainWindow.setMenuBar(self.menubar)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1605, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
         self.menubar.setObjectName("menubar")
+        self.menuFile = QtWidgets.QMenu(self.menubar)
+        self.menuFile.setObjectName("menuFile")
+        self.menuEdit = QtWidgets.QMenu(self.menubar)
+        self.menuEdit.setObjectName("menuEdit")
         MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+        self.actionCopy = QtWidgets.QAction(MainWindow)
+        self.actionCopy.setObjectName("actionCopy")
+        self.actionPaste = QtWidgets.QAction(MainWindow)
+        self.actionPaste.setObjectName("actionPaste")
+        self.actionSave = QtWidgets.QAction(MainWindow)
+        self.actionSave.setObjectName("actionSave")
+        self.actionNew = QtWidgets.QAction(MainWindow)
+        self.actionNew.setObjectName("actionNew")
+        self.menuFile.addAction(self.actionNew)
+        self.menuFile.addAction(self.actionSave)
+        self.menuEdit.addAction(self.actionCopy)
+        self.menuEdit.addAction(self.actionPaste)
+        self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuEdit.menuAction())
+
+        # self.retranslateUi(MainWindow)
+        # QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+        self.actionNew.triggered.connect(lambda: self.clicked("New was clicked"))
+        self.actionSave.triggered.connect(lambda: self.clicked("Save was clicked"))
+        self.actionCopy.triggered.connect(lambda: self.clicked("Copy was clicked"))
+        self.actionPaste.triggered.connect(lambda: self.clicked("Paste was clicked"))
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
@@ -127,6 +160,18 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", " Automated Visual Inspection"))
         self.opendir.setText(_translate("MainWindow", "Open Dir"))
+                # MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        # self.label.setText(_translate("MainWindow", "TextLabel"))
+        self.menuFile.setTitle(_translate("MainWindow", "File"))
+        self.menuEdit.setTitle(_translate("MainWindow", "Edit"))
+        self.actionCopy.setText(_translate("MainWindow", "Copy"))
+        self.actionCopy.setShortcut(_translate("MainWindow", "Ctrl+C"))
+        self.actionPaste.setText(_translate("MainWindow", "Paste"))
+        self.actionPaste.setShortcut(_translate("MainWindow", "Ctrl+V"))
+        self.actionSave.setText(_translate("MainWindow", "Save"))
+        self.actionSave.setShortcut(_translate("MainWindow", "Ctrl+S"))
+        self.actionNew.setText(_translate("MainWindow", "New"))
+        self.actionNew.setShortcut(_translate("MainWindow", "Ctrl+N"))
         # self.loadimage.setText(_translate("MainWindow", "LOAD IMAGE"))
         # self.savedir.setText(_translate("MainWindow", "SAVE DIR"))
         # self.save.setText(_translate("MainWindow", "SAVE IMAGE"))
@@ -165,7 +210,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 return
             self.image.setPixmap(pixmap)
             
-
+    def clicked(self, text):
+        self.label.setText(text)
+        self.label.adjustSize()
     def load_imagetext(self):
         global filename
         global main_image
@@ -211,7 +258,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         # msg_box_name.setIcon(QMessageBox.about(self, "Title", "Message"))
         msgBox = QMessageBox()
         msgBox.setIcon(QMessageBox.Information)
-        msgBox.setText("1. Config. - It is use to set all the configuration file \n 2. Open Dir - It is use to open a directory \n 3. Next Image -  It is used to access next image \n 4. Prev Image -  It is used to access previous image \n 5. Predict all - It is used to predict all the images \n 6. Back - It is used to access login page \n 7. Help - It gives Information of all the pages \n 8. Quit - It is used to quit the application ")
+        msgBox.setText(" 1. Config. - It is use to set all the configuration file \n\n 2. Open Dir - It is use to open a directory \n\n 3. Next Image -  It is used to access next image \n\n 4. Prev Image -  It is used to access previous image \n\n 5. Predict all - It is used to predict all the images \n\n 6. Back - It is used to access login page \n\n 7. Help - It gives Information of all the pages \n\n 8. Quit - It is used to quit the application ")
         msgBox.setWindowTitle("QMessageBox Example")
         msgBox.setStandardButtons(QMessageBox.Ok)
         # msgBox.buttonClicked.connect(msgButtonClick)
@@ -463,16 +510,25 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 subprocess.call(pref,shell=True)
                 img_path= filename.split("/")
                 print(img_path,"sddddddddddddddddddd")
+                img = images.split(".")
                 # commands = " ./darknet  detector test" + ' ' + values[3] + ' ' + values[1]+ ' ' + values[2] + ' ' + opening_dir + "/" + images + " -thresh 0.5 -dont_show"
-                commands = './darknet detector test '+ values[3]+' ' + values[1]+ ' ' + values[2] + ' ' + opening_dir + "/" + images +  ' -thresh 0.5 -dont_show' 
+                commands = './darknet detector test '+ values[3]+' ' + values[1]+ ' ' + values[2] + ' ' + opening_dir + "/" + images +  ' -thresh 0.5 -dont_show -ext_output < '+ opening_dir + "/" + images+' > results/'+img[0]+'.txt '
                 print('done')
+                textFileName = 'results/'+img[0]+'.txt'
+                
                 print(commands)
                 os.system(commands)
+                a_file = open(textFileName, "r")
+                lines = a_file.readlines()
+                a_file.close()
+                del lines[:12]
+                new_file = open(textFileName, "w+")
+                for line in lines:
+                    new_file.write(line)
+                new_file.close()
                 print(filename,"gggggggggggggggggg")
                 # image_path = "/content/gdrive/MyDrive/test3/predictions_%d.jpg"%d
                 # print(image_path, " ---------------------------------------")
-
-                img = images.split(".")
                 print(images,"rashmiiiiiiiiiiiiiiiiiiiiiiiii")
                 main_image_1=cv2.imread('predictions.jpg')
                 main_image_1=cv2.putText(main_image_1,img[0] + ".jpg",(10,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)

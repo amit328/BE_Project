@@ -7,7 +7,7 @@ Create CUDA-stream - 0
 nms_kind: greedynms (1), beta = 0.600000 
 nms_kind: greedynms (1), beta = 0.600000 
 
- seen 64, trained: 0 K-images (0 Kilo-batches_64) 
+ seen 64, trained: 268 K-images (4 Kilo-batches_64) 
 Learning Rate: 0.00261, Momentum: 0.9, Decay: 0.0005
  Detection layer: 30 - type = 28 
  Detection layer: 37 - type = 28 
